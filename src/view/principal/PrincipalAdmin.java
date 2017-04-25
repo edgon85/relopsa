@@ -18,6 +18,7 @@ import view.clientes.Clientes;
 import view.compras.Compras;
 import view.compras.ListarCompras;
 import view.productos.Productos;
+import view.stock.Stock;
 import view.tiendas.Tiendas;
 import view.ventas.Ventas;
 
@@ -397,6 +398,11 @@ public class PrincipalAdmin extends javax.swing.JFrame {
 
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/stock-16.png"))); // NOI18N
         jMenuItem9.setText("Ver stock de productos");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem9);
 
         jMenuBar1.add(jMenu2);
@@ -660,6 +666,14 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem30ActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        try {
+            abrirVentanaListarStock();
+        } catch (Exception e) {
+            System.out.println("No se puede abrir ventana producto " + e);
+        }
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -884,6 +898,17 @@ public class PrincipalAdmin extends javax.swing.JFrame {
             desktopPaneIndex.add(ventas);
             modelUniversal.centerJIF(desktopPaneIndex, ventas);
             ventas.show();
+        }
+    }
+
+    private void abrirVentanaListarStock() {
+        Stock stock = new Stock();
+        if(stock.isShowing()){
+            System.err.println("ya esta abierto");
+        }else{
+            desktopPaneIndex.add(stock);
+            modelUniversal.centerJIF(desktopPaneIndex, stock);
+            stock.show();
         }
     }
     
