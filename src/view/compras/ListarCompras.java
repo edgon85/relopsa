@@ -31,12 +31,14 @@ public class ListarCompras extends javax.swing.JInternalFrame {
     public ListarCompras() {
         initComponents();
         listarDatos();
+       
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialogListarDetalleCompra = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         filtroBuscarCompra = new org.jdesktop.swingx.JXSearchField();
@@ -46,6 +48,17 @@ public class ListarCompras extends javax.swing.JInternalFrame {
         btnModificar = new javax.swing.JButton();
         btnRecibir = new javax.swing.JButton();
         btModificar = new javax.swing.JButton();
+
+        javax.swing.GroupLayout jDialogListarDetalleCompraLayout = new javax.swing.GroupLayout(jDialogListarDetalleCompra.getContentPane());
+        jDialogListarDetalleCompra.getContentPane().setLayout(jDialogListarDetalleCompraLayout);
+        jDialogListarDetalleCompraLayout.setHorizontalGroup(
+            jDialogListarDetalleCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialogListarDetalleCompraLayout.setVerticalGroup(
+            jDialogListarDetalleCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setClosable(true);
 
@@ -136,10 +149,11 @@ public class ListarCompras extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRecibir;
     private org.jdesktop.swingx.JXSearchField filtroBuscarCompra;
+    private javax.swing.JDialog jDialogListarDetalleCompra;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tableListaCompras;
+    public static javax.swing.JTable tableListaCompras;
     // End of variables declaration//GEN-END:variables
 
 //------------Listar datos------------------------
@@ -197,7 +211,8 @@ public class ListarCompras extends javax.swing.JInternalFrame {
             }
         }
     }
-
+    
+     
     private void recibirProducto() {
         int filaSelected = tableListaCompras.getSelectedRow();
         tableModel = (DefaultTableModel) tableListaCompras.getModel();
@@ -206,23 +221,30 @@ public class ListarCompras extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una compra", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else if(tableListaCompras.getValueAt(filaSelected, 6).equals("Recibido")){
             JOptionPane.showMessageDialog(null, "Campra ya fue recibida", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }else{
-            
-            
+        }else{    
             int option = JOptionPane.showConfirmDialog(null, "Recibir producto","Recibir",JOptionPane.YES_NO_OPTION); 
             
             if(option == 0){
-                DBConnection conexion = new DBConnection();
-                String querty = " update compras set estado=? where compras_id= ?";
                 
-                try {
-                    PreparedStatement statement = conexion.connetion().prepareStatement(querty);
-                     statement.setString(1, "Recibido");
-                     statement.setString(2, tableListaCompras.getValueAt(filaSelected, 0).toString());                  
-                    statement.executeUpdate();
-                } catch (SQLException ex) {
-                    Logger.getLogger(ListarCompras.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                //(new RecibirCompra(jDialogListarDetalleCompra, true)).setVisible(true);
+                //RecibirCompra.lbNumeroCompra.setText(tableListaCompras.getValueAt(filaSelected, 1).toString());
+                //RecibirCompra.lbProveedorCompra.setText(tableListaCompras.getValueAt(filaSelected, 3).toString());
+                RecibirCompra recibirCompra = new RecibirCompra(jDialogListarDetalleCompra, closable);
+                recibirCompra.lbNumeroCompra.setText(tableListaCompras.getValueAt(filaSelected, 1).toString());
+                recibirCompra.lbProveedorCompra.setText(tableListaCompras.getValueAt(filaSelected, 3).toString());
+                recibirCompra.setVisible(true);
+                
+//                DBConnection conexion = new DBConnection();
+//                String querty = " update compras set estado=? where compras_id= ?";
+//                
+//                try {
+//                    PreparedStatement statement = conexion.connetion().prepareStatement(querty);
+//                     statement.setString(1, "Recibido");
+//                     statement.setString(2, tableListaCompras.getValueAt(filaSelected, 0).toString());                  
+//                    statement.executeUpdate();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(ListarCompras.class.getName()).log(Level.SEVERE, null, ex);
+//                }
                 
                 
             }else {
@@ -232,4 +254,6 @@ public class ListarCompras extends javax.swing.JInternalFrame {
         }
         listarDatos();
     }
+    
+
 }

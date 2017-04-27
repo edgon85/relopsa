@@ -3,11 +3,9 @@ package view.compras;
 import connection.DBConnection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import view.proveedor.Proveedores;
 
 /**
  *

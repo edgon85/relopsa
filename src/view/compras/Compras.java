@@ -1017,30 +1017,31 @@ public class Compras extends javax.swing.JInternalFrame {
     private void registrarDetalleCompra() {
         DBConnection conRegistrar = new DBConnection();
         String querty = "INSERT INTO detalleCompra (cantidad, precio_compra, compras_id, productos_id) VALUES (?,?,?,?)";
-        try {
-            PreparedStatement statement = conRegistrar.connetion().prepareStatement(querty);
-            
-            for (int i = 0; i < tableCompras.getRowCount(); i++) {
-                
-                statement.setInt(1, Integer.parseInt(tableCompras.getValueAt(i, 2).toString()));
-                statement.setDouble(2, Double.parseDouble(tableCompras.getValueAt(i, 3).toString()));
-                statement.setInt(3, Integer.parseInt(tableCompras.getValueAt(i, 6).toString()));
-                statement.setInt(4, Integer.parseInt(tableCompras.getValueAt(i, 7).toString()));  
-                statement.executeUpdate();
-            }
-           
-            JOptionPane.showMessageDialog(null, "Ingresado Correctamente!");
-            
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage() + ex);
+
+             try {
+                PreparedStatement statement = conRegistrar.connetion().prepareStatement(querty);
+
+                for (int i = 0; i < tableCompras.getRowCount(); i++) {
+
+                    statement.setInt(1, Integer.parseInt(tableCompras.getValueAt(i, 2).toString()));
+                    statement.setDouble(2, Double.parseDouble(tableCompras.getValueAt(i, 3).toString()));
+                    statement.setInt(3, Integer.parseInt(tableCompras.getValueAt(i, 6).toString()));
+                    statement.setInt(4, Integer.parseInt(tableCompras.getValueAt(i, 7).toString()));
+                    statement.executeUpdate();
+                }
+
+                JOptionPane.showMessageDialog(null, "Ingresado Correctamente!");
+
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage() + ex);
                 JOptionPane.showMessageDialog(null, "Insercion no exitosa!", "Error", JOptionPane.ERROR);
-        }finally {
+            } finally {
                 try {
                     conRegistrar.closeConnection();
                     System.err.println("Conexion generar compras cerrada");
                 } catch (SQLException ex) {
                     System.err.println(ex);
-                   Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
     }
