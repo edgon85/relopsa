@@ -654,7 +654,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         try {
             abrirVentanaListarCompras();
         } catch (Exception e) {
-            System.out.println("No se puede abrir ventana producto " + e);
+            System.out.println("No se puede abrir ventana listar compras " + e);
         }
     }//GEN-LAST:event_jMenuItem29ActionPerformed
 

@@ -5,6 +5,9 @@ package model;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
@@ -70,4 +73,9 @@ public class ModelUniversal {
         table.getColumnModel().getColumn(numColumna).setPreferredWidth(0);
     }
     
+    public static String formatoDecimal(double number) {
+        NumberFormat numberFormat = new DecimalFormat("#,###.00");
+        numberFormat.format(number);
+        return numberFormat.format(number);
+    }
 }

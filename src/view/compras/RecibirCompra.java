@@ -28,7 +28,7 @@ public class RecibirCompra extends JDialog {
     public RecibirCompra(JDialog parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+        this.setTitle("Detalle de Compra");
         
         this.setLocationRelativeTo(this);
         
@@ -74,6 +74,11 @@ public class RecibirCompra extends JDialog {
         });
 
         jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("De:");
 
@@ -126,6 +131,10 @@ public class RecibirCompra extends JDialog {
         actualizarStock();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
   
     

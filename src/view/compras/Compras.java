@@ -17,66 +17,67 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.ModelUniversal;
+import static view.principal.PrincipalAdmin.desktopPaneIndex;
 
 /**
  *
  * @author gonza
  */
 public class Compras extends javax.swing.JInternalFrame {
-    
+
     ModelUniversal modelUniversal = new ModelUniversal();
     DefaultTableModel tableModel;
-    
+
     static double total = 0.0;
     double sub_total = 0.0;
     double iva = 0.0;
-    
+
     public Compras() {
         initComponents();
         this.setTitle("Generar Compra");
-        
+
         txtNitCompras.setEditable(false);
         txtNombreCompras.setEditable(false);
         txtDireccionCompras.setEditable(false);
         txtTelCompras.setEditable(false);
-        
+
         txtIdCompra.setVisible(false);
         txtIdProducto.setVisible(false);
-        
+
         jComboBoxTipoDoc.addItem("-Seleccionar-");
         jComboBoxTipoDoc.addItem("Boleta");
         jComboBoxTipoDoc.addItem("Factura");
-        
+
         jComboFormaPago.addItem("-Seleccionar-");
         jComboFormaPago.addItem("Contado");
         jComboFormaPago.addItem("Credito");
-        
+
         jComboEstado.addItem("Sin Recibir");
         jComboEstado.addItem("Recibido");
-        
+
         btnEditarProducto.setVisible(false);
         btnCancelarProducto.setVisible(false);
-        
+
         jComboEstado.setVisible(false);
         lbEstado.setVisible(false);
-        
+
         txtCodigoCompras.setEditable(false);
         txtnombreComprasProducto.setEditable(false);
         txtstockCompras.setEditable(false);
         txtPrecioCompras.setEditable(false);
         txtCantidadCompras.setEditable(false);
-        
+
         txtSubTotal.setEditable(false);
         txtIva.setEditable(false);
         txtTotal.setEditable(false);
         txtNumProductos.setEditable(false);
-        
+
         numeroCompra();
-        
+
         modelUniversal.ocultarColumnas(tableCompras, 5);
         modelUniversal.ocultarColumnas(tableCompras, 6);
         modelUniversal.ocultarColumnas(tableCompras, 7);
-       
+
         dobleClickTabla();
     }
 
@@ -635,7 +636,7 @@ public class Compras extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -650,7 +651,7 @@ public class Compras extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btbBuscarProveedorActionPerformed
 
     private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
-        
+
         abrirJDialogProductos();
     }//GEN-LAST:event_btnBuscarProductoActionPerformed
 
@@ -658,23 +659,23 @@ public class Compras extends javax.swing.JInternalFrame {
         if (txtCodigoCompras.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Seleccione un producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
             btnBuscarProducto.requestFocus();
-        }else if (txtCantidadCompras.getText().equals("")) {
+        } else if (txtCantidadCompras.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Ingrese cantidad", "Advertencia", JOptionPane.WARNING_MESSAGE);
             txtCantidadCompras.requestFocus();
-        }else {
+        } else {
             agregarProductoTabla();
             txtCodigoCompras.setText("");
             txtnombreComprasProducto.setText("");
             txtstockCompras.setText("");
             txtPrecioCompras.setText("");
             txtCantidadCompras.setText("");
-            
+
             txtPrecioCompras.setEditable(false);
             txtCantidadCompras.setEditable(false);
             btnCancelarProducto.setVisible(false);
-        }     
+        }
     }//GEN-LAST:event_btnAgregarProductoActionPerformed
-    
+
     private void btnQuitarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarProductoActionPerformed
         quitarProducto();
         txtCodigoCompras.setText("");
@@ -682,11 +683,11 @@ public class Compras extends javax.swing.JInternalFrame {
         txtstockCompras.setText("");
         txtPrecioCompras.setText("");
         txtCantidadCompras.setText("");
-        
+
         btnEditarProducto.setVisible(false);
         btnCancelarProducto.setVisible(false);
         btnAgregarProducto.setEnabled(true);
-        
+
     }//GEN-LAST:event_btnQuitarProductoActionPerformed
 
     private void btnEditarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarProductoActionPerformed
@@ -696,11 +697,11 @@ public class Compras extends javax.swing.JInternalFrame {
         txtstockCompras.setText("");
         txtPrecioCompras.setText("");
         txtCantidadCompras.setText("");
-        
+
         btnEditarProducto.setVisible(false);
-        btnCancelarProducto.setVisible(false);       
+        btnCancelarProducto.setVisible(false);
         btnAgregarProducto.setEnabled(true);
-        
+
         btnBuscarProducto.requestFocus();
     }//GEN-LAST:event_btnEditarProductoActionPerformed
 
@@ -712,7 +713,7 @@ public class Compras extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarCompraActionPerformed
 
     private void txtCodigoComprasFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCodigoComprasFocusLost
-        
+
     }//GEN-LAST:event_txtCodigoComprasFocusLost
 
     private void btnCancelarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarProductoActionPerformed
@@ -721,21 +722,27 @@ public class Compras extends javax.swing.JInternalFrame {
         txtstockCompras.setText("");
         txtPrecioCompras.setText("");
         txtCantidadCompras.setText("");
-        
+
         txtPrecioCompras.setEditable(false);
         txtCantidadCompras.setEditable(false);
-        
+
         btnEditarProducto.setVisible(false);
         btnCancelarProducto.setVisible(false);
-        
+
         btnBuscarProducto.requestFocus();
-        
+
         btnAgregarProducto.setEnabled(true);
     }//GEN-LAST:event_btnCancelarProductoActionPerformed
 
     private void btnRegistrarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarCompraActionPerformed
-      registrarDetalleCompra();
-      this.dispose();
+        registrarDetalleCompra();
+        total = 0.0;
+        sub_total = 0.0;
+        iva = 0.0;
+        
+        //(new DialogBuscarProveedor(jDialogComprasProveedores, true)).setVisible(true);
+        abrirVentanaListarCompras();
+        this.dispose();
     }//GEN-LAST:event_btnRegistrarCompraActionPerformed
 
 
@@ -806,14 +813,14 @@ public class Compras extends javax.swing.JInternalFrame {
     public static javax.swing.JTextField txtstockCompras;
     // End of variables declaration//GEN-END:variables
 
-    private void abrirJDialogProveedores() {        
+    private void abrirJDialogProveedores() {
         (new DialogBuscarProveedor(jDialogComprasProveedores, true)).setVisible(true);
     }
-    
+
     private void abrirJDialogProductos() {
         (new DialogBuscarProducto(jDialogComprasProveedores, true)).setVisible(true);
     }
-    
+
     private void agregarProductoTabla() {
         tableModel = (DefaultTableModel) tableCompras.getModel();
         String codigo = txtCodigoCompras.getText();
@@ -823,13 +830,13 @@ public class Compras extends javax.swing.JInternalFrame {
         String stock = txtstockCompras.getText();
         String idCompra = txtIdCompra.getText();
         String idProdcuto = txtIdProducto.getText();
-        
+
         int cant = Integer.parseInt(cantidad);
         double prec = Double.parseDouble(precio);
         double importe = cant * prec;
-        
+
         Object fila[] = new Object[8];
-        
+
         fila[0] = codigo;
         fila[1] = nombre;
         fila[2] = cantidad;
@@ -838,49 +845,49 @@ public class Compras extends javax.swing.JInternalFrame {
         fila[5] = stock;
         fila[6] = idCompra;
         fila[7] = idProdcuto;
-        tableModel.addRow(fila);        
+        tableModel.addRow(fila);
         tableCompras.setModel(tableModel);
 
         // double calcula = importe;
         total = total + importe;
         iva = total * 0.12;
         sub_total = total - iva;
-        
+
         txtSubTotal.setText("" + sub_total);
         txtIva.setText("" + iva);
-        txtTotal.setText("" + total);        
-        
+        txtTotal.setText("" + total);
+
         txtNumProductos.setText("" + modelUniversal.numeroDatosTabla(tableCompras));
     }
-    
+
     private void quitarProducto() {
         tableModel = (DefaultTableModel) tableCompras.getModel();
-        
+
         double totalActua = 0.0;
         double ivaActual = 0.0;
         double subTotalActual = 0.0;
         double importe = 0.0;
-        
+
         int fila = tableCompras.getSelectedRow();
-        
+
         if (fila == -1) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un producto de la tabla", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             int confirmar = JOptionPane.showConfirmDialog(null, "¿Esta seguro de eliminar este producto?", "Eliminar", JOptionPane.YES_NO_OPTION);
             if (confirmar == JOptionPane.YES_OPTION) {
-                
+
                 importe = Double.parseDouble(tableCompras.getValueAt(fila, 4).toString());
                 totalActua = Double.parseDouble(txtTotal.getText()) - importe;
                 total = totalActua;
-                
+
                 ivaActual = total * 0.12;
-                
+
                 subTotalActual = totalActua - ivaActual;
-                
+
                 txtSubTotal.setText("" + subTotalActual);
                 txtIva.setText("" + ivaActual);
                 txtTotal.setText("" + total);
-                
+
                 tableModel.removeRow(fila);
             }
         }
@@ -899,33 +906,33 @@ public class Compras extends javax.swing.JInternalFrame {
         double totalActua = Double.parseDouble(txtTotal.getText().toString());
         double ivaActual = 0.0;
         double subTotalActual = 0.0;
-        
+
         double importe_nuevo = 0.0;
-        
+
         int fila = tableCompras.getSelectedRow();
-        
+
         double importe_actual = Double.parseDouble(tableCompras.getValueAt(fila, 4).toString());
         int cantidad_actual = Integer.parseInt(tableCompras.getValueAt(fila, 2).toString());
         int cantidad_nueva = Integer.parseInt(txtCantidadCompras.getText());
         double precio_actual = Double.parseDouble(tableCompras.getValueAt(fila, 3).toString());
         double precio_nuevo = Double.parseDouble(txtPrecioCompras.getText().toString());
-        
+
         if (cantidad_nueva != cantidad_actual || precio_nuevo != precio_actual) {
-            
+
             importe_nuevo = cantidad_nueva * precio_nuevo;
-            
+
             tableModel.setValueAt(cantidad_nueva, fila, 2);
-            tableModel.setValueAt(precio_nuevo,fila,3);
+            tableModel.setValueAt(precio_nuevo, fila, 3);
             tableModel.setValueAt(importe_nuevo, fila, 4);
-            
+
             totalActua = totalActua - importe_actual;
-            
+
             total = totalActua + importe_nuevo;
-            
+
             ivaActual = total * 0.12;
-            
+
             subTotalActual = total - ivaActual;
-            
+
             txtSubTotal.setText("" + subTotalActual);
             txtIva.setText("" + ivaActual);
             txtTotal.setText("" + total);
@@ -936,17 +943,17 @@ public class Compras extends javax.swing.JInternalFrame {
             txtstockCompras.setText("");
             txtPrecioCompras.setText("");
             txtCantidadCompras.setText("");
-            
+
             txtPrecioCompras.setEditable(false);
             txtCantidadCompras.setEditable(false);
-            
+
             btnCancelarProducto.setVisible(false);
             btnEditarProducto.setVisible(false);
         }
     }
-    
+
     public final void dobleClickTabla() {
-        
+
         tableCompras.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -960,22 +967,21 @@ public class Compras extends javax.swing.JInternalFrame {
                     txtstockCompras.setText(tableCompras.getValueAt(fila, 5).toString());
                     txtPrecioCompras.setText(tableCompras.getValueAt(fila, 3).toString());
                     txtCantidadCompras.setText(tableCompras.getValueAt(fila, 2).toString());
-                    
-                    
+
                     txtPrecioCompras.setEditable(true);
                     txtCantidadCompras.setEditable(true);
-                    
+
                     btnEditarProducto.setVisible(true);
                     btnCancelarProducto.setVisible(true);
-                    
+
                     txtCantidadCompras.requestFocus();
-                    
+
                     btnAgregarProducto.setEnabled(false);
                 }
             }
         });
-    }    
-    
+    }
+
     private void numeroCompra() {
         DBConnection dBConnection = new DBConnection();
         String querty = "SELECT * FROM relopsa.compras";
@@ -991,10 +997,10 @@ public class Compras extends javax.swing.JInternalFrame {
             if (!rs.next()) {
                 txtNumCompras.setText("1");
             } else {
-                
-               do{
-                   datos[0] = rs.getString(4);
-               }while (rs.next());
+
+                do {
+                    datos[0] = rs.getString(4);
+                } while (rs.next());
 
                 numCompra = Integer.parseInt(datos[0]) + 1;
                 txtNumCompras.setText("" + numCompra);
@@ -1018,31 +1024,43 @@ public class Compras extends javax.swing.JInternalFrame {
         DBConnection conRegistrar = new DBConnection();
         String querty = "INSERT INTO detalleCompra (cantidad, precio_compra, compras_id, productos_id) VALUES (?,?,?,?)";
 
-             try {
-                PreparedStatement statement = conRegistrar.connetion().prepareStatement(querty);
+        try {
+            PreparedStatement statement = conRegistrar.connetion().prepareStatement(querty);
 
-                for (int i = 0; i < tableCompras.getRowCount(); i++) {
+            for (int i = 0; i < tableCompras.getRowCount(); i++) {
 
-                    statement.setInt(1, Integer.parseInt(tableCompras.getValueAt(i, 2).toString()));
-                    statement.setDouble(2, Double.parseDouble(tableCompras.getValueAt(i, 3).toString()));
-                    statement.setInt(3, Integer.parseInt(tableCompras.getValueAt(i, 6).toString()));
-                    statement.setInt(4, Integer.parseInt(tableCompras.getValueAt(i, 7).toString()));
-                    statement.executeUpdate();
-                }
-
-                JOptionPane.showMessageDialog(null, "Ingresado Correctamente!");
-
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage() + ex);
-                JOptionPane.showMessageDialog(null, "Insercion no exitosa!", "Error", JOptionPane.ERROR);
-            } finally {
-                try {
-                    conRegistrar.closeConnection();
-                    System.err.println("Conexion generar compras cerrada");
-                } catch (SQLException ex) {
-                    System.err.println(ex);
-                    Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                statement.setInt(1, Integer.parseInt(tableCompras.getValueAt(i, 2).toString()));
+                statement.setDouble(2, Double.parseDouble(tableCompras.getValueAt(i, 3).toString()));
+                statement.setInt(3, Integer.parseInt(tableCompras.getValueAt(i, 6).toString()));
+                statement.setInt(4, Integer.parseInt(tableCompras.getValueAt(i, 7).toString()));
+                statement.executeUpdate();
             }
+
+            JOptionPane.showMessageDialog(null, "Ingresado Correctamente!");
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage() + ex);
+            JOptionPane.showMessageDialog(null, "Insercion no exitosa!", "Error", JOptionPane.ERROR);
+        } finally {
+            try {
+                conRegistrar.closeConnection();
+                System.err.println("Conexion generar compras cerrada");
+            } catch (SQLException ex) {
+                System.err.println(ex);
+                Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    
+    private void abrirVentanaListarCompras() {
+        ListarCompras listarCompras = new ListarCompras();
+        if(listarCompras.isShowing()){
+            System.err.println("ya esta abierto");
+        }else{
+            desktopPaneIndex.add(listarCompras);
+            modelUniversal.centerJIF(desktopPaneIndex, listarCompras);
+            listarCompras.show();
+        }
     }
 }
