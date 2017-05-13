@@ -3,8 +3,11 @@ import connection.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -22,7 +25,8 @@ public class Prueba {
         // numeroCompra();
         // obtenerCompra();
         
-       System.out.println(formatoDecimal(223125.15878));
+       //System.out.println(formatoDecimal(223125.15878));
+       fechaActual();
     }
 
     private static void pruebaCompras() {
@@ -125,5 +129,12 @@ public class Prueba {
         NumberFormat numberFormat = new DecimalFormat("#,###.00");
         numberFormat.format(number);
         return numberFormat.format(number);
+    }
+    
+    public static String fechaActual(){
+        Date fechaActual = new Date();
+        DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        return formatoFecha.format(fechaActual);
+        //System.out.println(formatoFecha.format(fechaActual));
     }
 }

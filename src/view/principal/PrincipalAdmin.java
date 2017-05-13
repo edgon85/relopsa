@@ -20,6 +20,7 @@ import view.compras.ListarCompras;
 import view.productos.Productos;
 import view.stock.Stock;
 import view.tiendas.Tiendas;
+import view.ventas.ListarVentas;
 import view.ventas.Ventas;
 
 /**
@@ -93,6 +94,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         jMenuItem29 = new javax.swing.JMenuItem();
         jMenu13 = new javax.swing.JMenu();
         jMenuItem30 = new javax.swing.JMenuItem();
+        jMenuItem31 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
@@ -438,6 +440,14 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         });
         jMenu13.add(jMenuItem30);
 
+        jMenuItem31.setText("Listar Venta");
+        jMenuItem31.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem31ActionPerformed(evt);
+            }
+        });
+        jMenu13.add(jMenuItem31);
+
         jMenuBar1.add(jMenu13);
 
         jMenu4.setText("Reportes");
@@ -613,7 +623,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         try {
             abrirVentanaProveedores();
         } catch (Exception e) {
-            System.out.println("No se puede abrir ventana proveedor " + e);
+            System.out.println("No se puede abrir ventana proveedores " + e);
         }
     }//GEN-LAST:event_jLabel6MouseClicked
 
@@ -621,7 +631,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         try {
             abrirVentanaCategorias();
         } catch (Exception e) {
-            System.out.println("No se puede abrir ventana proveedor " + e);
+            System.out.println("No se puede abrir ventana categorias " + e);
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
@@ -637,7 +647,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         try {
             abrirVentanaTiendas();
         } catch (Exception e) {
-            System.out.println("No se puede abrir ventana producto " + e);
+            System.out.println("No se puede abrir ventana tiendas " + e);
         }
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
@@ -646,7 +656,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         try {
             abrirVentanaCompras();
         } catch (Exception e) {
-            System.out.println("No se puede abrir ventana producto " + e);
+            System.out.println("No se puede abrir ventana compras " + e);
         }
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
@@ -662,7 +672,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         try {
             abrirVentanaVentas();
         } catch (Exception e) {
-            System.out.println("No se puede abrir ventana producto " + e);
+            System.out.println("No se puede abrir ventana ventas " + e);
         }
     }//GEN-LAST:event_jMenuItem30ActionPerformed
 
@@ -670,9 +680,17 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         try {
             abrirVentanaListarStock();
         } catch (Exception e) {
-            System.out.println("No se puede abrir ventana producto " + e);
+            System.out.println("No se puede abrir ventana listar Stock " + e);
         }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem31ActionPerformed
+        try {
+            abrirVentanaListarVentas();
+        } catch (Exception e) {
+            System.out.println("No se puede abrir ventana listar ventas " + e);
+        }
+    }//GEN-LAST:event_jMenuItem31ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -770,6 +788,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem29;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem30;
+    private javax.swing.JMenuItem jMenuItem31;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -910,6 +929,17 @@ public class PrincipalAdmin extends javax.swing.JFrame {
             modelUniversal.centerJIF(desktopPaneIndex, stock);
             stock.show();
         }
+    }
+
+    private void abrirVentanaListarVentas() {
+        ListarVentas listarVentas = new ListarVentas();
+        if(listarVentas.isShowing()){
+            System.err.println("ya esta abierto");
+        }else{
+            desktopPaneIndex.add(listarVentas);
+            modelUniversal.centerJIF(desktopPaneIndex, listarVentas);
+            listarVentas.show();
+        }    
     }
     
     

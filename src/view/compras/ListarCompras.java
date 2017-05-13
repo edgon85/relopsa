@@ -366,7 +366,7 @@ public class ListarCompras extends javax.swing.JInternalFrame {
                         EditarCompra.jComboFormaPago.setSelectedIndex(2);
                     }
 
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     EditarCompra.jDateFechaCompra.setDate(dateFormat.parse(fecha));
 
                     if (datosC[6].equals("Sin Recibir")) {
