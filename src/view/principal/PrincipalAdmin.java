@@ -5,12 +5,19 @@
  */
 package view.principal;
 
+import connection.DBConnection;
 import model.DesktopBackground;
 import model.ModelUniversal;
 import view.proveedor.Proveedores;
 import view.usuario.Usuarios;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.security.Principal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JDesktopPane;
 import view.categorias.Categorias;
@@ -43,6 +50,8 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         //  loadImage(desktopPaneIndex, fondo);
+        parametrosSistema();
+        txtImpuesto.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -76,6 +85,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
         labelUserPAdmin = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabelCargopAdmin = new javax.swing.JLabel();
+        txtImpuesto = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -310,6 +320,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
 
         desktopPaneIndex.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         desktopPaneIndex.setLayer(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktopPaneIndex.setLayer(txtImpuesto, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout desktopPaneIndexLayout = new javax.swing.GroupLayout(desktopPaneIndex);
         desktopPaneIndex.setLayout(desktopPaneIndexLayout);
@@ -317,12 +328,18 @@ public class PrincipalAdmin extends javax.swing.JFrame {
             desktopPaneIndexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, desktopPaneIndexLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         desktopPaneIndexLayout.setVerticalGroup(
             desktopPaneIndexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(desktopPaneIndexLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 348, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -804,6 +821,7 @@ public class PrincipalAdmin extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupMenu2;
     private javax.swing.JLabel labelClientesPrincipalAdmin;
     public static javax.swing.JLabel labelUserPAdmin;
+    public static javax.swing.JTextField txtImpuesto;
     // End of variables declaration//GEN-END:variables
 
     public void loadImage(JDesktopPane jdesktop, InputStream fileImage) {
@@ -941,7 +959,37 @@ public class PrincipalAdmin extends javax.swing.JFrame {
             listarVentas.show();
         }    
     }
-    
-    
 
+    private void parametrosSistema() {
+        DBConnection conParam = new DBConnection();
+        String querty = "select nombre, direccion, impuesto from parametros";
+        String datos[] = new String[3];
+        double iva = 0.0;
+        
+        try {
+            Statement st = conParam.connetion().createStatement();
+            ResultSet rs = st.executeQuery(querty);
+
+            while (rs.next()) {
+
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+            }
+
+            iva =  Double.parseDouble(datos[2])/100;
+            txtImpuesto.setText(""+iva);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage() + e);
+            //JOptionPane.showMessageDialog(null, "Insercion!", "Error", JOptionPane.ERROR);
+        } finally {
+            try {
+                conParam.closeConnection();
+                System.err.println("Conexion listar ventas cerrada");
+            } catch (SQLException ex) {
+                Logger.getLogger(PrincipalAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }
 }

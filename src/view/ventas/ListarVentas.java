@@ -5,7 +5,7 @@
  */
 package view.ventas;
 
-import view.compras.*;
+
 import connection.DBConnection;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -22,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import model.ModelUniversal;
+import view.principal.PrincipalAdmin;
 import static view.principal.PrincipalAdmin.desktopPaneIndex;
 
 /**
@@ -174,12 +174,12 @@ public class ListarVentas extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-        abrirVentanaCompras();
+        abrirVentanaVentas();
         this.dispose();
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        modificarCompra();
+        modificarVenta();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void filtroBuscarVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filtroBuscarVentaKeyTyped
@@ -187,7 +187,7 @@ public class ListarVentas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_filtroBuscarVentaKeyTyped
 
     private void btnRecibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecibirActionPerformed
-        recibirProducto();
+        //recibirProducto();
     }//GEN-LAST:event_btnRecibirActionPerformed
 
 
@@ -226,7 +226,9 @@ public class ListarVentas extends javax.swing.JInternalFrame {
         tableListaVentas.setRowSorter(ordertable);
         this.tableListaVentas.setModel(tableModel);
 
-        String querty = "select v.ventas_id as Id, v.num_venta as Venta, v.tipo_doc as Documento, v.fecha as Fecha, CONCAT(c.nombre, c.apellido) as Vendido_a, v.forma_pago as Termino, sum(det.cantidad * det.precio_venta) as total from ventas as v join detalleVenta as det on v.ventas_id=det.ventas_id join clientes as c on v.clientes_id = c.clientes_id group by Venta";
+        String querty = "select v.ventas_id as Id, v.num_venta as Venta, v.tipo_doc as Documento, DATE_FORMAT(v.fecha, '%d/%m/%Y') as Fecha, CONCAT(c.nombre,' ', c.apellido) as Vendido_a, v.forma_pago as Termino, if(v.tipo_doc='Factura',sum((det.cantidad * det.precio_venta)*"
+                + PrincipalAdmin.txtImpuesto.getText()
+                + " + det.cantidad * det.precio_venta),sum(det.cantidad * det.precio_venta)) as total from ventas as v join detalleVenta as det on v.ventas_id=det.ventas_id join clientes as c on v.clientes_id = c.clientes_id group by Venta";
         String datos[] = new String[7];
 
         try {
@@ -261,7 +263,7 @@ public class ListarVentas extends javax.swing.JInternalFrame {
         }
     }
 
-    private void recibirProducto() {
+  /*  private void recibirProducto() {
         int filaSelected = tableListaVentas.getSelectedRow();
         tableModel = (DefaultTableModel) tableListaVentas.getModel();
 
@@ -283,47 +285,84 @@ public class ListarVentas extends javax.swing.JInternalFrame {
             }
         }
         listarDatos();
-    }
+    }*/
 
-    private void abrirVentanaCompras() {
-        Compras compras = new Compras();
-        if (compras.isShowing()) {
+    private void abrirVentanaVentas() {
+        Ventas ventas = new Ventas();
+        if (ventas.isShowing()) {
             System.err.println("ya esta abierto");
         } else {
-            desktopPaneIndex.add(compras);
-            modelUniversal.centerJIF(desktopPaneIndex, compras);
-            compras.show();
+            desktopPaneIndex.add(ventas);
+            modelUniversal.centerJIF(desktopPaneIndex, ventas);
+            ventas.show();
         }
     }
 
-    private void modificarCompra() {
+    private void modificarVenta() {
         int filaSelected = tableListaVentas.getSelectedRow();
 
         if (filaSelected == -1) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una compra", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        } else if (tableListaVentas.getValueAt(filaSelected, 6).equals("Recibido")) {
-            JOptionPane.showMessageDialog(null, "No se puede modificar, la compra ya fue recibida", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una venta", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
-            EditarCompra editarCompras = new EditarCompra();
-            String numCompra = tableListaVentas.getValueAt(filaSelected, 1).toString();
-            String fecha = tableListaVentas.getValueAt(filaSelected, 2).toString().trim();
-            String datosC[] = new String[8];
-            String datosP[] = new String[5];
+            EditarVenta editarVenta = new EditarVenta();
+            String numVenta = tableListaVentas.getValueAt(filaSelected, 1).toString();
+            String fecha = tableListaVentas.getValueAt(filaSelected, 3).toString().trim();
+            String datosV[] = new String[8];
+            String datosC[] = new String[5];
+            
+           // System.err.println(fecha);
 
             DBConnection conEditar = new DBConnection();
-            String quertyCompra = "select * from compras where numero_compra = " + numCompra;
+            String quertyCompra = "select ventas_id, num_venta,tipo_doc,serie,LPAD(num_doc,6,0),forma_pago,DATE_FORMAT(fecha, '%d/%m/%y'),clientes_id from ventas where num_venta=" + numVenta;
 
-            if (editarCompras.isShowing()) {
+            if (editarVenta.isShowing()) {
                 System.err.println("ya esta abierto");
             } else {
-                desktopPaneIndex.add(editarCompras);
-                modelUniversal.centerJIF(desktopPaneIndex, editarCompras);
+                desktopPaneIndex.add(editarVenta);
+                modelUniversal.centerJIF(desktopPaneIndex, editarVenta);
                 //recibirCompra.lbNumeroCompra.setText(tableListaCompras.getValueAt(filaSelected, 1).toString());
-                EditarCompra.txtNumCompras.setText(numCompra);
+                EditarVenta.txtNumVentas.setText(numVenta);
 
                 try {
                     Statement st = conEditar.connetion().createStatement();
-                    ResultSet rsC = st.executeQuery(quertyCompra);
+                    ResultSet rsV = st.executeQuery(quertyCompra);
+
+                    while (rsV.next()) {
+
+                        datosV[0] = rsV.getString(1); //id
+                        datosV[1] = rsV.getString(2); //num_venta
+                        datosV[2] = rsV.getString(3); //tipo_doc
+                        datosV[3] = rsV.getString(4); //serie
+                        datosV[4] = rsV.getString(5); //num_doc
+                        datosV[5] = rsV.getString(6); //forma_pago
+                        datosV[6] = rsV.getString(7); //fecha
+                        datosV[7] = rsV.getString(8); //clientes_id
+                    }
+
+                    EditarVenta.txtIdVenta.setText(datosV[0]);
+                    EditarVenta.txtNumVentas.setText(datosV[1]);                   
+                    if (datosV[2].equals("Factura")) {
+                        EditarVenta.jComboBoxTipoDoc.setSelectedIndex(0);
+                    } else {
+                        EditarVenta.jComboBoxTipoDoc.setSelectedIndex(1);
+                    }
+                    EditarVenta.txtSerieVenta.setText(datosV[3]);
+                    EditarVenta.txtNumDocVenta.setText(datosV[4]);
+
+                    if (datosV[5].equals("Contado")) {
+                        EditarVenta.jComboFormaPago.setSelectedIndex(0);
+                    } else {
+                        EditarVenta.jComboFormaPago.setSelectedIndex(1);
+                    }
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    EditarVenta.jDateFechaVenta.setDate(dateFormat.parse(fecha));
+                   // System.err.println(fecha);
+                    EditarVenta.txt_id_cliente.setText(datosV[7]);
+                            
+                    String quertyCliente = "select clientes_id, nit, CONCAT(nombre,' ',apellido), direccion, telefono from clientes where clientes_id =" + datosV[7];
+
+                    ResultSet rsC = st.executeQuery(quertyCliente);
 
                     while (rsC.next()) {
 
@@ -332,56 +371,26 @@ public class ListarVentas extends javax.swing.JInternalFrame {
                         datosC[2] = rsC.getString(3);
                         datosC[3] = rsC.getString(4);
                         datosC[4] = rsC.getString(5);
-                        datosC[5] = rsC.getString(6);
-                        datosC[6] = rsC.getString(7);
-                        datosC[7] = rsC.getString(8);
                     }
 
-                    EditarCompra.txtIdCompra.setText(datosC[0]);
-                    if (datosC[1].equals("Factura")) {
-                        EditarCompra.jComboBoxTipoDoc.setSelectedIndex(0);
-                    } else {
-                        EditarCompra.jComboBoxTipoDoc.setSelectedIndex(1);
-                    }
-                    EditarCompra.txtNumDocumentoCompra.setText(datosC[2]);
-
-                    if (datosC[4].equals("Contado")) {
-                        EditarCompra.jComboFormaPago.setSelectedIndex(1);
-                    } else {
-                        EditarCompra.jComboFormaPago.setSelectedIndex(2);
-                    }
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    EditarCompra.jDateFechaCompra.setDate(dateFormat.parse(fecha));
-
-                    if (datosC[6].equals("Sin Recibir")) {
-                        EditarCompra.jComboEstado.setSelectedIndex(0);
-                    } else {
-                        EditarCompra.jComboEstado.setSelectedIndex(1);
-                    }
-                    String quertyProv = "select proveedores_id, nit, nombre, direccion, telefono from proveedores where proveedores_id =" + datosC[7];
-
-                    ResultSet rsP = st.executeQuery(quertyProv);
-
-                    while (rsP.next()) {
-
-                        datosP[0] = rsP.getString(1);
-                        datosP[1] = rsP.getString(2);
-                        datosP[2] = rsP.getString(3);
-                        datosP[3] = rsP.getString(4);
-                        datosP[4] = rsP.getString(5);
-                    }
-
-                    EditarCompra.txtIdProveedor.setText(datosP[0]);
-                    EditarCompra.txtNitCompras.setText(datosP[1]);
-                    EditarCompra.txtNombreCompras.setText(datosP[2]);
-                    EditarCompra.txtDireccionCompras.setText(datosP[3]);
-                    EditarCompra.txtTelCompras.setText(datosP[4]);
+                    EditarVenta.txt_id_cliente.setText(datosC[0]);
+                    EditarVenta.txtNitVentas.setText(datosC[1]);
+                    EditarVenta.txtNombreVentas.setText(datosC[2]);
+                    EditarVenta.txtDireccionVentas.setText(datosC[3]);
+                    EditarVenta.txtTelVentas.setText(datosC[4]);
 
                 } catch (Exception e) {
+                    System.err.println("No se puede modificar venta: " + e.getMessage());
+                }finally {
+                try {
+                    conEditar.closeConnection();
+                    System.err.println("Conexion cerrada...");
+                } catch (SQLException ex) {
+                    Logger.getLogger(ListarVentas.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            editarCompras.show();
+            }
+            editarVenta.show();
         }
     }
     
@@ -403,5 +412,4 @@ public class ListarVentas extends javax.swing.JInternalFrame {
         int columnaABuscar = 1;
         trsFiltro.setRowFilter(RowFilter.regexFilter(filtroBuscarVenta.getText(), columnaABuscar));
     }
-
 }

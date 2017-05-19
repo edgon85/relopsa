@@ -76,7 +76,7 @@ public class ModelUniversal {
         table.getColumnModel().getColumn(numColumna).setPreferredWidth(0);
     }
     
-    public static String formatoDecimal(double number) {
+    public String formatoDecimal(double number) {
         NumberFormat numberFormat = new DecimalFormat("#,###.00");
         numberFormat.format(number);
         return numberFormat.format(number);

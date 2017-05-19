@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.ModelUniversal;
+import view.principal.PrincipalAdmin;
 
 /**
  *
@@ -31,6 +32,7 @@ public class Ventas extends javax.swing.JInternalFrame {
 
     ModelUniversal modelUniversal = new ModelUniversal();
     DefaultTableModel tableModel;
+    double impuesto = Double.parseDouble(PrincipalAdmin.txtImpuesto.getText());
 
     static double total = 0.0;
     double sub_total = 0.0;
@@ -447,7 +449,6 @@ public class Ventas extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtnombreVentasProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -832,7 +833,7 @@ public class Ventas extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtIva;
     public static javax.swing.JTextField txtNitVentas;
     public static javax.swing.JTextField txtNombreVentas;
-    private javax.swing.JTextField txtNumDocVenta;
+    public static javax.swing.JTextField txtNumDocVenta;
     private javax.swing.JTextField txtNumProductos;
     public static javax.swing.JTextField txtNumVentas;
     public static javax.swing.JTextField txtPrecioVentas;
@@ -866,6 +867,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         int cant = Integer.parseInt(cantidad);
         double prec = Double.parseDouble(precio);
         double importe = cant * prec;
+        
 
         if (jComboBoxTipoDoc.getSelectedItem().equals("Factura")) {
             Object fila[] = new Object[8];
@@ -885,7 +887,7 @@ public class Ventas extends javax.swing.JInternalFrame {
 //            iva = total * 0.12;
 //            sub_total = total - iva;
             sub_total = sub_total + importe;
-            iva = sub_total * 0.12;
+            iva = sub_total * impuesto;
             total = sub_total + iva;
 
             txtSubTotal.setText(modelUniversal.formatoDecimal(sub_total));
@@ -941,7 +943,7 @@ public class Ventas extends javax.swing.JInternalFrame {
                     importe = Double.parseDouble(tableventas.getValueAt(fila, 4).toString());
                     subTotalActual = Double.parseDouble(txtSubTotal.getText()) - importe;
                     //total = totalActua;
-                    ivaActual = subTotalActual * 0.12;
+                    ivaActual = subTotalActual * impuesto;
                     total = subTotalActual + ivaActual;
                     //= totalActua - ivaActual;
 
@@ -1009,7 +1011,7 @@ public class Ventas extends javax.swing.JInternalFrame {
 
                 subTotalActual = subTotalActual + importe_nuevo;
 
-                ivaActual = subTotalActual * 0.12;
+                ivaActual = subTotalActual * impuesto;
 //            
                 total = subTotalActual + ivaActual;
                 iva = ivaActual;
